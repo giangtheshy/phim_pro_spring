@@ -14,7 +14,8 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
 
 
     @Query(value = "SELECT f.id, title,(SELECT url FROM episode ep WHERE f.id=ep.film_id AND number_ep=1 LIMIT 1) AS url," +
-            "image,stars,category,episode,directors,country,description,up_coming,is_multi,(SELECT COUNT(*)" +
+            "image,stars,category,(SELECT COUNT(*) FROM episode ep WHERE f.id=ep.film_id ) AS episode,directors,country,description,up_coming,is_multi,(SELECT COUNT" +
+            "(*)" +
             " FROM favorite fav WHERE f.id=fav.film_id) AS fav_count,created_date,search,(SELECT COUNT(*) FROM comment cmt WHERE f.id=cmt.film_id) AS comment_count FROM film f WHERE f.id=?1",nativeQuery = true)
     Optional<Film> findFilmById(Long id);
 

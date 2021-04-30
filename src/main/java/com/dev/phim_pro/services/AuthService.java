@@ -1,6 +1,7 @@
 package com.dev.phim_pro.services;
 
 import com.dev.phim_pro.dto.AuthenticationResponse;
+import com.dev.phim_pro.dto.AvatarRequest;
 import com.dev.phim_pro.dto.LoginRequest;
 import com.dev.phim_pro.dto.RegisterRequest;
 import com.dev.phim_pro.exceptions.SpringPhimException;
@@ -57,6 +58,7 @@ public class AuthService {
         user.setCreate_time(Instant.now());
         user.setEnable(false);
         user.setRole(false);
+        user.setAvatar("https://res.cloudinary.com/giangtheshy/image/upload/v1618042500/dev/khumuivietnam/pcwl6uqwzepykmhnpuks.jpg");
 
         userRepository.save(user);
 
@@ -140,6 +142,11 @@ public class AuthService {
     }
     public List<String> getFavorites(Long id){
         return favoriteRepository.findAllByUserId(id);
+    }
+    public void updateAvatar(AvatarRequest avatar){
+        User user =(User) getCurrentUser();
+        user.setAvatar(avatar.getAvatar());
+        userRepository.save(user);
     }
     public boolean isLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

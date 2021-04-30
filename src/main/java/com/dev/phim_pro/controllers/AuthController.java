@@ -1,6 +1,7 @@
 package com.dev.phim_pro.controllers;
 
 import com.dev.phim_pro.dto.AuthenticationResponse;
+import com.dev.phim_pro.dto.AvatarRequest;
 import com.dev.phim_pro.dto.LoginRequest;
 import com.dev.phim_pro.dto.RegisterRequest;
 import com.dev.phim_pro.services.AuthService;
@@ -62,5 +63,9 @@ public class AuthController {
     public ResponseEntity<String> logout(){
         SecurityContextHolder.getContext().setAuthentication(null);
         return ResponseEntity.status(OK).body("Refresh token deleted successfully!!");
+    }
+    @PutMapping("/avatar")
+    public void updateAvatar(@RequestBody AvatarRequest avatar){
+        authService.updateAvatar(avatar);
     }
 }

@@ -20,9 +20,11 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
     private final AuthService authService;
+    private final AccessAdmin accessAdmin;
 
 
     public Film createFilm(Film film){
+        accessAdmin.isAccess();
         film.setComment_count(0);
         film.setFav_count(0);
         film.setCreated_date(Instant.now());
@@ -34,6 +36,7 @@ public class FilmService {
          return film;
     }
     public void deleteFilm(Long id){
+        accessAdmin.isAccess();
         filmRepository.deleteById(id);
     }
     public List<Film> getAllFilms(){
@@ -45,6 +48,7 @@ public class FilmService {
                 "exist"));
     }
     public Film updateFilmById(Film film){
+        accessAdmin.isAccess();
          filmRepository.save(film);
          return getFilmById(film.getId());
     }
