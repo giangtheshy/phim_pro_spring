@@ -9,5 +9,6 @@ public interface CommentStatic {
      Long getFilm_id();
      String getName();
      String getAvatar();
+     String getType();
      Long getUser_id();
 }

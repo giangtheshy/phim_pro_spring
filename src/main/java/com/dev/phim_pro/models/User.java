@@ -28,6 +28,7 @@ public class User {
     private String avatar;
     private Boolean enable;
     private Boolean role;
+    private String type;
 
 
 }

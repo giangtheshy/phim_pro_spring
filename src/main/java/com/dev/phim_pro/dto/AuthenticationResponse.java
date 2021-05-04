@@ -16,6 +16,7 @@ public class AuthenticationResponse {
     private String name;
     private String avatar;
     private Boolean role;
+    private String type;
     private List<String> favorites;
     private List<String> watched;
 }

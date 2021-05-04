@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    @Query(value = "SELECT cmt.id AS id,cmt.created_date AS created_date,message,film_id,name,avatar,cmt" +
+    @Query(value = "SELECT cmt.id AS id,cmt.created_date AS created_date,message,film_id,name,avatar," +
+            "type,cmt" +
             ".user_id FROM comment cmt JOIN user u ON cmt.user_id=u.id WHERE film_id=?1 ORDER BY cmt" +
             ".created_date DESC",nativeQuery = true)
     List<CommentStatic> findAllByFilmId(Long id);

@@ -20,5 +20,6 @@ public class CommentResponse {
     private Long film_id;
     private String username;
     private String avatar;
+    private String type;
     private Long user_id;
 }

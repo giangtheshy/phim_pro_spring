@@ -117,6 +117,7 @@ public class AuthService {
                 .name(user.getName())
                 .avatar(user.getAvatar())
                 .role(user.getRole())
+                .type(user.getType())
                 .favorites(getFavorites(user.getId()))
                 .watched(getWatched(user.getId()))
                 .build();
@@ -134,6 +135,7 @@ public class AuthService {
                 .role(user.getRole())
                 .favorites(getFavorites(user.getId()))
                 .watched(getWatched(user.getId()))
+                .type(user.getType())
                 .build();
 
     }
@@ -147,6 +149,9 @@ public class AuthService {
         User user =(User) getCurrentUser();
         user.setAvatar(avatar.getAvatar());
         userRepository.save(user);
+    }
+    public void updateTypeUser(Long id){
+        userRepository.updateTypeUser(id);
     }
     public boolean isLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

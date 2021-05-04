@@ -13,5 +13,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByUsername(String userName);
 
-
+    @Modifying
+    @Query(value = "UPDATE user SET type = 'premium' WHERE (id = ?1);",nativeQuery = true)
+    void updateTypeUser(Long id);
 }

@@ -51,6 +51,7 @@ public class CommentService {
         comment.setUsername(commentStatic.getName());
         comment.setAvatar(commentStatic.getAvatar());
         comment.setUser_id(commentStatic.getUser_id());
+        comment.setType(commentStatic.getType());
     return comment;
     }
 }
