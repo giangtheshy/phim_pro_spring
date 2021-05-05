@@ -48,8 +48,7 @@ public class VnPayController {
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl","PROD".equals(System.getenv("STAGE"))?"https://phim-pro-spring" +
-                ".netlify.app/payment/result":
+        vnp_Params.put("vnp_ReturnUrl","PROD".equals(System.getenv("STAGE"))?"https://phim-pro.netlify.app/payment/result":
                 vnPayConfig.getVnp_Returnurl());
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         Date dt = new Date();

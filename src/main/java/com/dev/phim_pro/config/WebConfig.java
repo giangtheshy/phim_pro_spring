@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("PROD".equals(System.getenv("STAGE"))?"https://phim-pro.netlify.app":"http://localhost:3000")
                 .allowedMethods("*")
                 .maxAge(3600L)
                 .allowedHeaders("*")
