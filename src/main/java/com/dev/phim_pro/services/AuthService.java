@@ -46,7 +46,8 @@ public class AuthService {
         if (registerRequest.getUsername().length() < 5 || registerRequest.getPassword().length() < 5) {
             throw new SpringPhimException("Email and password must bigger than 5");
         }
-        if(!registerRequest.getPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])[0-9a-zA-Z]{8,}$")){
+        if(!registerRequest.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=" +
+                ".*[0-9]).{8,}$")){
             throw new SpringPhimException("Password must have least a lowercase ,uppercase,digit character " +
                     "and length bigger than 8");
         }
