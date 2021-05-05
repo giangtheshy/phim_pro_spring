@@ -21,6 +21,8 @@ public class VnPayConfig {
 
     @Value("${vnp_PayUrl}")
     private String vnp_PayUrl;
+    @Value("${client.url}")
+    private String clientUrl;
     @Value("${vnp_Returnurl}")
     private String vnp_Returnurl;
     @Value("${vnp_TmnCode}")
