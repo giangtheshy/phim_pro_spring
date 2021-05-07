@@ -66,7 +66,7 @@ public class AuthService {
         String token = generateVerificationToken(user);
 
         mailService.sendMail(new NotificationEmail("Xác nhận e-mail của bạn",
-                user.getEmail(), "http://localhost:8080/api/v1/auth/accountVerification/" + token
+                user.getEmail(), "https://phim-pro-spring.herokuapp.com/api/v1/auth/accountVerification/" + token
         ));
     }
 

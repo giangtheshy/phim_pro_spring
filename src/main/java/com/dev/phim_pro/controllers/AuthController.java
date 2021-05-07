@@ -39,14 +39,14 @@ public class AuthController {
                 "       Email has been verified, please click the button below to login\n" +
                 "    </p>\n" +
                 "\n" +
-                "    <a href=\"" +"http://localhost:3000/account"  + "\"\n" +
+                "    <a href=\"" +"https://phim-pro.netlify.app/account"  + "\"\n" +
                 "       style=\"background: crimson; text-decoration: none; color: white; padding: 10px " +
                 "20px; margin: 10px 0; display: inline-block;border-radius:0.5rem;font-weight: bold;" +
                 "box-shadow:0 3px 6px crimson;text-transform: uppercase\">Confirm</a>\n" +
                 "\n" +
                 "    <p>If you clicked on the button above but failed, you can go to the website address below:</p>\n" +
                 "\n" +
-                "    <span >" + "http://localhost:3000/account" + "</span>\n" +
+                "    <span >" + "https://phim-pro.netlify.app/account" + "</span>\n" +
                 "</div>", OK);
     }
     @PostMapping("/login")

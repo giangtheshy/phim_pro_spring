@@ -37,7 +37,7 @@ public class FilmService {
     }
     public void deleteFilm(Long id){
         accessAdmin.isAccess();
-        filmRepository.deleteById(id);
+        filmRepository.deleteFilm(id);
     }
     public List<Film> getAllFilms(){
         List<FilmStatic> filmStatics= filmRepository.findAllFilm();
