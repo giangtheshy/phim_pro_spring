@@ -43,11 +43,15 @@ public class AuthService {
     private final FavoriteRepository favoriteRepository;
 
     public void signUp(RegisterRequest registerRequest) {
+        User findUser = userRepository.findByUser(registerRequest.getUsername());
+        if (findUser.getUsername().length() > 0) {
+            throw new SpringPhimException("User name đã tồn tài!");
+        }
         if (registerRequest.getUsername().length() < 5 || registerRequest.getPassword().length() < 5) {
             throw new SpringPhimException("Email and password must bigger than 5");
         }
-        if(!registerRequest.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=" +
-                ".*[0-9]).{8,}$")){
+        if (!registerRequest.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=" +
+                ".*[0-9]).{8,}$")) {
             throw new SpringPhimException("Password must have least a lowercase ,uppercase,digit character " +
                     "and length bigger than 8");
         }
@@ -85,8 +89,8 @@ public class AuthService {
         org.springframework.security.core.userdetails.User principal =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
                         .getAuthentication().getPrincipal();
-        return userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new SpringPhimException("User name not found with name - " + principal.getUsername()));
+        return userRepository.findByUserNameAndEnable(principal.getUsername())
+                .orElseThrow(() -> new SpringPhimException("Tài khoản không tồn tại với user name - " + principal.getUsername()));
 
     }
 
@@ -107,6 +111,7 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
+
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -140,20 +145,25 @@ public class AuthService {
                 .build();
 
     }
-    public List<String> getWatched(Long id){
+
+    public List<String> getWatched(Long id) {
         return watchedRepository.findAllByUserId(id);
     }
-    public List<String> getFavorites(Long id){
+
+    public List<String> getFavorites(Long id) {
         return favoriteRepository.findAllByUserId(id);
     }
-    public void updateAvatar(AvatarRequest avatar){
-        User user =(User) getCurrentUser();
+
+    public void updateAvatar(AvatarRequest avatar) {
+        User user = (User) getCurrentUser();
         user.setAvatar(avatar.getAvatar());
         userRepository.save(user);
     }
-    public void updateTypeUser(Long id){
+
+    public void updateTypeUser(Long id) {
         userRepository.updateTypeUser(id);
     }
+
     public boolean isLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();

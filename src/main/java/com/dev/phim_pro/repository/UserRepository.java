@@ -13,7 +13,13 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByUsername(String userName);
 
+    @Query(value = "SELECT * FROM user WHERE username=?1",nativeQuery = true)
+    User findByUser(String userName);
+
     @Modifying
     @Query(value = "UPDATE user SET type = 'premium' WHERE (id = ?1);",nativeQuery = true)
     void updateTypeUser(Long id);
+
+    @Query(value = "SELECT * FROM user WHERE username=?1 AND enable=true",nativeQuery = true)
+    Optional<User> findByUserNameAndEnable(String username);
 }
