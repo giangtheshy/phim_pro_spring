@@ -1,9 +1,6 @@
 package com.dev.phim_pro.services;
 
-import com.dev.phim_pro.dto.AuthenticationResponse;
-import com.dev.phim_pro.dto.AvatarRequest;
-import com.dev.phim_pro.dto.LoginRequest;
-import com.dev.phim_pro.dto.RegisterRequest;
+import com.dev.phim_pro.dto.*;
 import com.dev.phim_pro.exceptions.SpringPhimException;
 import com.dev.phim_pro.models.NotificationEmail;
 import com.dev.phim_pro.models.Token;
@@ -32,6 +29,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Transactional
 public class AuthService {
+
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -114,6 +112,103 @@ public class AuthService {
 
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtProvider.generateToken(authentication);
+        User user = getCurrentUser();
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .name(user.getName())
+                .avatar(user.getAvatar())
+                .role(user.getRole())
+                .type(user.getType())
+                .favorites(getFavorites(user.getId()))
+                .watched(getWatched(user.getId()))
+                .build();
+    }
+
+    public AuthenticationResponse loginGoogle(Oauth2Request oauth2Request) {
+        Optional<User> check = userRepository.findByEmail(oauth2Request.getEmail());
+
+        if (check.isPresent()) {
+            User user = check.get();
+//            if (passwordEncoder.matches(user.getPassword(),
+//                    oauth2Request.getEmail() + jwtProvider.getGoogleSecret())) {
+                user.setName(oauth2Request.getName());
+                user.setAvatar(oauth2Request.getAvatar());
+
+                userRepository.save(user);
+
+//            } else {
+//                throw new SpringPhimException("Not authenticate accepted!");
+//            }
+
+        } else {
+            User user = new User();
+            String password = oauth2Request.getEmail() + jwtProvider.getGoogleSecret();
+            user.setUsername(oauth2Request.getEmail());
+            user.setName(oauth2Request.getName());
+            user.setPassword(passwordEncoder.encode(password));
+            user.setAvatar(oauth2Request.getAvatar());
+            user.setEnable(true);
+            user.setCreate_time(Instant.now());
+            user.setRole(false);
+            user.setEmail(oauth2Request.getEmail());
+
+            userRepository.save(user);
+
+        }
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(oauth2Request.getEmail(),
+                        oauth2Request.getEmail() + jwtProvider.getGoogleSecret()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtProvider.generateToken(authentication);
+        User user = getCurrentUser();
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .name(user.getName())
+                .avatar(user.getAvatar())
+                .role(user.getRole())
+                .type(user.getType())
+                .favorites(getFavorites(user.getId()))
+                .watched(getWatched(user.getId()))
+                .build();
+    }
+
+    public AuthenticationResponse loginFacebook(Oauth2Request oauth2Request) {
+        Optional<User> check = userRepository.findByEmail(oauth2Request.getEmail());
+
+        if (check.isPresent()) {
+            User user = check.get();
+//            if (passwordEncoder.matches(user.getPassword(),
+//                    oauth2Request.getEmail() + jwtProvider.getFacebookSecret())) {
+                user.setName(oauth2Request.getName());
+                user.setAvatar(oauth2Request.getAvatar());
+
+                userRepository.save(user);
+
+//            } else {
+//                throw new SpringPhimException("Not authenticate accepted!");
+//            }
+        } else {
+            User user = new User();
+            String password = oauth2Request.getEmail() + jwtProvider.getFacebookSecret();
+            user.setUsername(oauth2Request.getEmail());
+            user.setName(oauth2Request.getName());
+            user.setPassword(passwordEncoder.encode(password));
+            user.setAvatar(oauth2Request.getAvatar());
+            user.setEnable(true);
+            user.setCreate_time(Instant.now());
+            user.setRole(false);
+            user.setEmail(oauth2Request.getEmail());
+
+            userRepository.save(user);
+
+        }
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(oauth2Request.getEmail(),
+                        oauth2Request.getEmail() + jwtProvider.getFacebookSecret()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication);

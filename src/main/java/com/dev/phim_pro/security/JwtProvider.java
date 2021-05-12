@@ -3,6 +3,7 @@ package com.dev.phim_pro.security;
 import com.dev.phim_pro.exceptions.SpringPhimException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,18 @@ import static io.jsonwebtoken.Jwts.parserBuilder;
 import static java.util.Date.from;
 
 @Service
+@Data
 public class JwtProvider {
 
     private KeyStore keyStore;
     @Value("${jwt.expiration.time}")
     private Long jwtExpirationInMillis;
+
+    @Value("${google_secret}")
+    private  String googleSecret;
+
+    @Value("${facebook_secret}")
+    private  String facebookSecret;
 
     @PostConstruct
     public void init() {
