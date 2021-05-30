@@ -58,7 +58,7 @@ public class AuthController {
         try {
             return ResponseEntity.status(OK).body(authService.loginGoogle(oauth2Request));
         } catch (Exception e) {
-            throw new SpringPhimException("Can not login with gooogle",e);
+            throw new SpringPhimException("Can not login with gooogle", e);
         }
     }
 
@@ -67,7 +67,7 @@ public class AuthController {
         try {
             return ResponseEntity.status(OK).body(authService.loginFacebook(oauth2Request));
         } catch (Exception e) {
-            throw new SpringPhimException("Can not login with facebook",e);
+            throw new SpringPhimException("Can not login with facebook", e);
         }
 
     }
@@ -87,5 +87,28 @@ public class AuthController {
     @PutMapping("/avatar")
     public void updateAvatar(@RequestBody AvatarRequest avatar) {
         authService.updateAvatar(avatar);
+    }
+
+    @GetMapping("/forgot-password/{email}")
+    public ResponseEntity<String> forgotPassword(@PathVariable String email) {
+        try {
+            return ResponseEntity.status(OK).body(authService.forgotPassword(email));
+        } catch (Exception e) {
+            return ResponseEntity.status(NOT_ACCEPTABLE).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/reset-password/{token}")
+    public ResponseEntity<String> resetPassword(@RequestBody RequestResetPassword requestResetPassword,
+                                                @PathVariable String token) {
+       try{
+           if (requestResetPassword.getPassword().equals(requestResetPassword.getConfirmPassword())) {
+               return ResponseEntity.status(OK).body(authService.resetPassword(requestResetPassword.getPassword(), token));
+           } else {
+               return ResponseEntity.status(NOT_ACCEPTABLE).body("Password not matches!");
+           }
+       }catch (Exception e){
+           return ResponseEntity.status(NOT_ACCEPTABLE).body(e.getMessage());
+       }
     }
 }
